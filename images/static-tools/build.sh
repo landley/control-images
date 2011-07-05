@@ -5,12 +5,7 @@
 # The tarballs are downloaded into the "packages" directory, which is
 # created as needed.
 
-source sources/include.sh || exit 1
-
-PATCHDIR="$SOURCES/control-images/static-tools-patches"
-SRCDIR="$SRCDIR/static-tools" && mkdir -p "$SRCDIR" || dienow
-WORK="$BUILD/control-images/static-tools" && blank_tempdir "$WORK"
-SRCTREE="$WORK"
+source common/include.sh || exit 1
 
 EXTRACT_ALL=1
 
@@ -27,12 +22,12 @@ SHA1=543fa9abff0442edca308772d6cef85557677e02 \
 maybe_fork "download || dienow"
 
 URL=http://matt.ucc.asn.au/dropbear/releases/dropbear-0.53.1.tar.bz2 \
-SHA1= \
+SHA1=01d9c6673b2b20659b8557cfe6de8386a94f4801 \
 maybe_fork download || dienow
 
-URL=http://kernel.org/pub/software/utils/pciutils/pciutils-3.1.7.tar.bz2 \
-SHA1= \
-maybe_fork download || dienow
+#URL=http://kernel.org/pub/software/utils/pciutils/pciutils-3.1.7.tar.bz2 \
+#SHA1= \
+#maybe_fork download || dienow
 
 echo === Got all source.
 
@@ -91,4 +86,4 @@ chmod +x "$WORK"/init || dienow
 
 cd "$TOP"
 
-mksquashfs "$WORK" "$WORK.hdc" -noappend -all-root
+squash_image

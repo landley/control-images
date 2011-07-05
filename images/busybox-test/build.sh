@@ -2,14 +2,15 @@
 
 # Run the busybox test suite.
 
-source sources/include.sh || exit 1
-
-WORK="$BUILD/control-images/busybox-test" && blank_tempdir "$WORK"
+source common/include.sh || exit 1
 
 # Don't download busybox, it's got to already be there in standard sources.
 
-setupfor busybox
-cd "$TOP"
+EXTRACT_ALL=1
+
+URL=http://www.busybox.net/downloads/busybox-1.18.4.tar.bz2 \
+SHA1=d285855e5770b0fb7caf477dd41ce0863657b975 \
+maybe_fork "download || dienow"
 
 cat > "$WORK"/init << 'EOF' || dienow
 #!/bin/bash
@@ -27,7 +28,6 @@ rm -rf busybox || exit 1
 sync
 
 EOF
-
 chmod +x "$WORK"/init || dienow
 
-mksquashfs "$WORK" "$WORK.hdc" -noappend -all-root
+squash_image

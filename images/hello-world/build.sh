@@ -1,16 +1,18 @@
 #!/bin/bash
 
+# Simple self-contained build control image creation script.  Doesn't use
+# the bootstrap skeleton, instead compiles and runs the threaded "hello world"
+# program from the Aboriginal Linux /usr/src directory as a build environment
+# smoketest.  Grep the output for "Hello world!" to test for success.
+
 # Download all the source tarballs we haven't got up-to-date copies of.
 
 # The tarballs are downloaded into the "packages" directory, which is
 # created as needed.
 
-source sources/include.sh || exit 1
+source common/include.sh || exit 1
 
-# Set up working directories
-
-WORK="$BUILD/control-images/hello-world"
-blank_tempdir "$WORK"
+# Write init script via a "here" document.
 
 cat > "$WORK"/init << 'EOF' || dienow
 #!/bin/bash
@@ -32,6 +34,4 @@ EOF
 
 chmod +x "$WORK"/init || dienow
 
-cd "$TOP"
-
-mksquashfs "$WORK" "$WORK.hdc" -noappend -all-root
+squash_image
