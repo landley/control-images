@@ -1,0 +1,170 @@
+<title>Build Control Images</title>
+
+<h1>Control Images</h1>
+
+<p>These are squashfs images that plug into <a href=/aboriginal>Aboriginal
+Linux</a> to drive an automated software build.  These images are
+target-independent and self-contained: they include source code and build
+control scripts, and upload the result to the host via FTP through the virtual
+network.</p>
+
+<ul>
+<li><a href=downloads>Download source code</a></li>
+<li><a href=downloads/binaries>Download binaries</a></li>
+<li><a href=/hg/control-images>Mercurial Repository</a></li>
+</ul>
+
+<p>Development discussion goes on the
+<a href=http://lists.landley.net/listinfo.cgi/aboriginal-landley.net>Aboriginal Linux mailing list</a>.</p>
+
+<h2>How to use</h2>
+
+<p>Each system image tarball includes a "./native-build.sh" which expects a
+control image as its argument.  The results are uploaded through the
+virtual network to an "upload" subdirectory under the system image
+directory.</p>
+
+<p>This attaches the control image as the third
+virtual hard drive provided to QEMU (the first is the root filesystem, the
+second is a sparse 2 gigabyte ext3 filesystem provided by dev-environment.sh
+and mounted on /home to provide writeable space for the build).  The Aboriginal
+Linux init script (sbin/init.sh) will mount this /dev/hdc on /mnt and check for
+an executable "/mnt/init".  If it finds one, it will run that instead of
+launching a shell prompt.  (It pauses for three seconds for the user to press
+any key to get a shell prompt anyway.)  When the script exits, the system
+image shuts down causing QEMU to exit.</p>
+
+<p>The /mnt/init script can use busybox ftpput to upload its results to
+the host using FTP_SERVER and FTP_PORT environment variables.  (By default
+native-build.sh runs the busybox ftp server on the host, writing into an
+"upload" subdirectory.)</p>
+
+<h2>Example usage:</h2>
+
+<blockquote><pre>
+cd system-image-armv5l
+./native-build.sh ../static-tools.hdc
+ls -l upload
+</pre></blockquote>
+
+<h2>Can I use this on real hardware?</h2>
+
+<p>Sure, grab a root-filesystem tarball, chroot into it (probably via
+sbin/init.sh to set up the mount points properly), mount the squashfs
+on /mnt, and run /mnt/init.</p>
+
+<p>You might want to export values for "CPUS", "HOST", "FTP_SERVER", and
+"FTP_PORT", and maybe even set up distcc
+(see dev-environment.sh for an example).</p>
+
+<h1>Creating build images</h1>
+
+<p>Download the source code and run "./build.sh" to list available build
+images (from the "images" directory).  Run "./build.sh all" to compile
+everything.</p>
+
+<p>This build infrastructure is largely copied from Aboriginal Linux.</p>
+
+<h2>Designing your own build control images</h2>
+
+<p>The native-build.sh script attaches the control image as the third
+virtual hard drive provided to QEMU, hence the "hdc" extension.
+The init scripts then mount this on /mnt, and run /mnt/init if it exists
+instead of starting a command shell. From there, the script can do anything
+it needs to.</p>
+
+<p>The full environment is:</p>
+
+<ul>
+<li><p>The first disk is Aboriginal Linux's squashfs root filesystem,
+attached by run-emulator.sh and mounted on "/".  This contains a simple
+native Linux development environment built from busybox,
+uClibc, gcc, binutils, make, and bash.</p></li>
+
+<li><p>The second disk is a sparse 2 gigabyte ext3 filesystem created and
+attached by dev-environment.sh, which then calls run-emulator.sh.  If
+/dev/hdb (or /dev/sdb) exists, sbin/init.sh will mount it
+on "/home" to provide writeable space for the build.  (Otherwise it
+mounts a tmpfs there.)</p>
+
+<p>The dev-environment.sh script also sets up distcc if distccd and the
+appropriate cross compiler are in the host's $PATH.  It creates a directory
+of symlinks to the cross compiler binaries and runs distccd
+with a restricted $PATH so it can only find the cross compiler, and sets
+DISTCC_HOSTS=$ADDRESS:$PORT/$CPUS on the kernel command line.<p>
+</li>
+
+<li><p>The third disk is the build control image attached by
+native-build.sh, which then calls dev-environment.sh.  The Aboriginal
+Linux init script (sbin/init.sh) will mount this /dev/hdc on /mnt and check for
+an executable "/mnt/init".  If it finds one, it will run that instead of
+launching a shell prompt.  (It pauses for three seconds for the user to press
+any key to get a shell prompt anyway.)  When the script exits, the system
+image shuts down causing QEMU to exit.</p>
+
+<p>The native-build.sh script also sets the FTP_SERVER and FTP_PORT environment
+variables, allowing the /mnt/init script to use busybox ftpput to upload its
+results to the host. using FTP_SERVER and FTP_PORT environment variables.
+If these variables aren't already set, native-build.sh runs the busybox ftp
+server on the host, configured to write into an "upload" subdirectory.</p>
+</li>
+</ul>
+
+<p>Creating your own build control image means creating a squashfs with
+what you want to appear on /mnt.  It must contain at least an executable "init"
+file.</p>
+
+<h2>The basic control image build infrastructure</h2>
+
+<p>The "common" directory contains common code available to each build script.
+The top level "build.sh" file pulls in the common definitions from
+"common/include.sh", calls the "images/$NAME/build.sh" for the image in
+question, and then makes a squashfs of the result.  Control images are
+created by running "./build.sh imagename", or "./build.sh all" to iterate
+through all available images/*/build.sh files.  The output should show
+up in the "build" directory.</p>
+
+<p>The source code for control images lives under the "images" directory, each
+in its own subdirectory.  Each one provides a file "images/$NAME/build.sh"
+which populates a "$TOP/build/$NAME" directory and should contain an executable
+file called "init" and any other files that init program requires.</p>
+
+<p>You can write your own images/$NAME/build.sh, which can put anything it wants
+into the resulting image.  (It doesn't have to perform a native build, it
+can launch a server or something.  Up to you.)</p>
+
+<h2>The bootstrap infrastructure</h2>
+
+<p>The other option is to use the "bootstrap" infrastructure by linking
+an image's download.sh to common/builder.sh.  This copies the common/bootstrap
+code into the resulting system image, calls "images/$NAME/download.sh" to add
+additional package source, and copies additional files (I.E. build scripts)
+from the "images/$NAME/mnt" directory.  This download.sh can use the same
+"download" function as aboriginal linux
+(there's a copy in include/download_functions.sh).</p>
+
+<p>A bootstrap image builds packages and installs them into the system
+image, copying the system to a writeable /home/chroot first if necessary using
+setup-chroot.  Note that the control image is --bind mounted into the new
+chroot, and thus remains read only.</p.
+
+<p>The /mnt/run-build-stages.sh script iterates through
+/mnt/package-list and calls /mnt/build-one-package.sh on each name listed,
+in order.  (It keeps a list of packages it's built in /usr/src/manifest so
+it can skip rebuilding successfully installed packages if interactively
+stopped and restarted.)</p>
+
+<p>/mnt/build-one-package.sh calls build scripts out of /mnt/build which can
+end in different extensions indicating how to set up the writeable build
+directory:</p>
+
+<ul>
+<li><b>.sh</b> - copy a tree of symlinks from /mnt/packages to /home</li>
+<li><b>.nolink</b> - copy file contents from /mnt/packages to /home</li>
+<li><b>.nosrc</b> - this package has no source code</li>
+</ul>
+
+<p>When /mnt/run-build-stages.sh exits, /mnt/init uploads a tarball of the
+resulting chroot filesystem.  The intended use is to convert the minimal
+native development environment into a distribution environment for use
+with an existing distribution's package manager and source repository.</p>
