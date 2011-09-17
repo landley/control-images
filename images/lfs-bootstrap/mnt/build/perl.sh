@@ -18,7 +18,7 @@ sed -i -e "s|BUILD_ZLIB\s*= True|BUILD_ZLIB = False|"           \
     cpan/Compress-Raw-Zlib/config.in &&
 ./Configure -des -Dprefix=/usr -Dvendorprefix=/usr \
   -Dman1dir=/usr/share/man/man1 -Dman3dir=/usr/share/man/man3 \
-  -Dpager="/usr/bin/less -is" -Duseshrplib -Dusenm=n &&
+  -Dpager="/usr/bin/less -is" -Duseshrplib -Dusenm=n < /dev/null &&
 make -j $CPUS || exit 1
 
 if [ ! -z "$CHECK" ]
