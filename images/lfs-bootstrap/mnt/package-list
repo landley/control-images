@@ -45,5 +45,5 @@ sysklogd	#busybox
 sysvinit	#busybox
 tar		#busybox
 texinfo		#development pointless
-udev		#busybox
+#udev		#busybox
 vim
