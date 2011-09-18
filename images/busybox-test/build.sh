@@ -2,10 +2,6 @@
 
 # Run the busybox test suite.
 
-source common/include.sh || exit 1
-
-# Don't download busybox, it's got to already be there in standard sources.
-
 EXTRACT_ALL=1
 
 URL=http://www.busybox.net/downloads/busybox-1.18.4.tar.bz2 \
@@ -29,5 +25,3 @@ sync
 
 EOF
 chmod +x "$WORK"/init || dienow
-
-squash_image

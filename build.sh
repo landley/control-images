@@ -7,12 +7,26 @@ then
   exit 1
 fi
 
+build_control_image()
+{
+  (
+    IMAGENAME="$1"
+    MYDIR=$(readlink -f images/"$1")
+
+    source common/include.sh &&
+    source images/"$1"/build.sh &&
+    squash_image
+  )
+}
+
 if [ "$1" != all ]
 then
-  images/"$1"/build.sh
+  build_control_image "$1"
 else
   for i in $(ls images)
   do
-    images/"$i"/build.sh || exit 1
+    echo "=== Checking $i"
+    [ -e build/$i.hdc ] && echo "build/$i.hdc exists" && continue
+    build_control_image "$i" || exit 1
   done
 fi

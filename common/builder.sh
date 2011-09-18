@@ -2,8 +2,6 @@
 
 # Control image generation infrastructure using common bootstrap files.
 
-source common/include.sh
-
 # Copy common infrastructure to target
 
 cp "$TOP/common/"{utility_functions.sh,bootstrap/*} "$WORK" || exit 1
@@ -21,4 +19,3 @@ announce "Download/extract source code" &&
 EXTRACT_ALL=1 source "$MYDIR"/download.sh || exit 1
 
 cleanup_oldfiles
-squash_image

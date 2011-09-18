@@ -5,8 +5,6 @@
 # The tarballs are downloaded into the "packages" directory, which is
 # created as needed.
 
-source common/include.sh || exit 1
-
 EXTRACT_ALL=1
 
 echo "=== Download source code."
@@ -83,7 +81,3 @@ sync
 EOF
 
 chmod +x "$WORK"/init || dienow
-
-cd "$TOP"
-
-squash_image
