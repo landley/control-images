@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [ "$1" != "all" ] && [ ! -x "images/$1/build.sh" ]
 then
