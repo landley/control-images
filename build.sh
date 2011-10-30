@@ -12,9 +12,11 @@ build_control_image()
   (
     IMAGENAME="$1"
     MYDIR=$(readlink -f images/"$1")
+    BUILDER="$MYDIR"/build.sh
+    [ -e "$BUILDER" ] || BUILDER=common/builder.sh
 
     source common/include.sh &&
-    source images/"$1"/build.sh &&
+    source $BUILDER &&
     squash_image
   )
 }
