@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$1" != "all" ] && [ ! -x "images/$1/build.sh" ]
+if [ "$1" != "all" ] && [ ! -d "images/$1" ]
 then
   echo 'Available images (or "all"):'
   ls images
