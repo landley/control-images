@@ -9,7 +9,7 @@ pkg-config	#development
 ncurses
 #gettext		#development internationalization
 gettext-stub	#development internationalization
-util-linux-ng
+util-linux
 e2fsprogs	#busybox
 coreutils	#busybox
 gawk		#busybox
@@ -36,6 +36,7 @@ iproute2	#busybox?
 kbd		#busybox?
 less		#busybox
 make		#development
+xz		#busybox
 man-db
 module-init-tools #busybox
 patch		#busybox
