@@ -8,7 +8,7 @@ source /mnt/functions.sh || exit 1
 
 # build $1
 
-set_titlebar "$1"
+set_titlebar "$1$X_OF_Y"
 
 # Three types of /mnt/build scripts:
 #
