@@ -2,6 +2,7 @@
 
 # Stub to compile packages that refuse to build without gettext.
 
-gcc -shared -fpic -o /usr/lib/libintl.so libintl-stub.c &&
-cp libintl-stub.h /usr/include/libintl.h &&
-cp msgfmt /usr/bin
+gcc -shared -fpic -o libintl.so libintl-stub.c &&
+install -m 755 libintl.so /usr/lib && 
+install -m 644 libintl-stub.h /usr/include/libintl.h &&
+install -m 755 msgfmt /usr/bin
