@@ -3,7 +3,7 @@
 # zlib 1.2.5 accidentally shipped a generated file, which it then tries to
 # overwrite in-place.  This doesn't work so well on a read only filesystem.
 
-rm -f Makefile &&
+rm -f Makefile zconf.h &&
 
 # Fix another bug.
 
