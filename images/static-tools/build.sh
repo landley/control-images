@@ -46,7 +46,7 @@ echo === Native build static zlib
 cp -sfR /mnt/zlib zlib &&
 cd zlib &&
 # 
-rm -f Makefile &&
+rm -f Makefile zconf.h &&
 ./configure &&
 make -j $CPUS &&
 cd .. || exit 1
