@@ -4,8 +4,8 @@
 
 EXTRACT_ALL=1
 
-URL=http://www.busybox.net/downloads/busybox-1.18.4.tar.bz2 \
-SHA1=d285855e5770b0fb7caf477dd41ce0863657b975 \
+URL=http://www.busybox.net/downloads/busybox-1.19.4.tar.bz2 \
+SHA1=5d7db83d8efbadc19c86ec236e673504bbf43517 \
 maybe_fork "download || dienow"
 
 cat > "$WORK"/init << 'EOF' || dienow
@@ -15,7 +15,7 @@ echo === $HOST Run busybox test suite
 
 cp -sfR /mnt/busybox busybox && cd busybox &&
 make defconfig &&
-ln -s /bin/busybox busybox &&
+make -j $CPUS &&
 cd testsuite &&
 ./runtest &&
 cd .. &&
