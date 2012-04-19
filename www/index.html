@@ -73,7 +73,7 @@ The init scripts then mount this on /mnt, and run /mnt/init if it exists
 instead of starting a command shell. From there, the script can do anything
 it needs to.</p>
 
-<p>The full environment is:</p>
+<p>The full build-time environment is:</p>
 
 <ul>
 <li><p>The first disk is Aboriginal Linux's squashfs root filesystem,
@@ -81,11 +81,13 @@ attached by run-emulator.sh and mounted on "/".  This contains a simple
 native Linux development environment built from busybox,
 uClibc, gcc, binutils, make, and bash.</p></li>
 
-<li><p>The second disk is a sparse 2 gigabyte ext3 filesystem created and
-attached by dev-environment.sh, which then calls run-emulator.sh.  If
+<li><p>The second disk is a 2 gigabyte ext3 filesystem created in a sparse
+file on the host (so it grows up to 2 gigabytes as space is used).  It's
+attached to QEMU by dev-environment.sh, which then calls run-emulator.sh.  If
 /dev/hdb (or /dev/sdb) exists, sbin/init.sh will mount it
 on "/home" to provide writeable space for the build.  (Otherwise it
-mounts a tmpfs there.)</p>
+mounts a tmpfs there if the root filesystem is read only, and does nothing
+if the root filesystem is already writeable.)</p>
 
 <p>The dev-environment.sh script also sets up distcc if distccd and the
 appropriate cross compiler are in the host's $PATH.  It creates a directory
