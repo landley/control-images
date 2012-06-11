@@ -1,7 +1,7 @@
 # Download all the source tarballs we haven't got up-to-date copies of.
 
-URL=http://zlib.net/zlib-1.2.5.tar.bz2 \
-SHA1=543fa9abff0442edca308772d6cef85557677e02 \
+URL=http://zlib.net/zlib-1.2.7.tar.bz2 \
+SHA1=858818fe6d358ec682d54ac5e106a2dd62628e7f \
 maybe_fork "download || dienow"
 
 URL=http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.7.tar.gz \
