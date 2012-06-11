@@ -11,8 +11,8 @@ echo "=== Download source code."
 
 # Note: set SHA1= blank to skip checksum validation.
 
-URL=http://downloads.sf.net/sourceforge/strace/strace-4.5.19.tar.bz2 \
-SHA1=5554c2fd8ffae5c1e2b289b2024aa85a0889c989 \
+URL=http://downloads.sf.net/sourceforge/strace/strace-4.7.tar.bz2 \
+SHA1=af917d27abf54b43fecf10373b320a2d42dfba4e \
 maybe_fork download || dienow
 
 URL=http://zlib.net/zlib-1.2.7.tar.bz2 \
