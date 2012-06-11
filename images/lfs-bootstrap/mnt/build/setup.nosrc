@@ -2,6 +2,11 @@
 
 set +h
 
+# Remove commands that incompetent install scripts overwrite, thus overwriting
+# the busybox/toybox binary.
+
+rm -f /bin/{unset,dmesg,setsid,clear,cal} &&
+
 # Basic setup.  Create directories not in the aboriginal base system.
 
 cd / &&
