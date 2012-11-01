@@ -21,6 +21,12 @@ build_control_image()
   )
 }
 
+if [ -z "$(which mksquashfs)" ]
+then
+  echo "no mksquashfs in \$PATH"
+  exit 1
+fi
+
 if [ "$1" != all ]
 then
   build_control_image "$1"
