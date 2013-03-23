@@ -17,6 +17,17 @@ do
     echo "$i already installed"
     continue
   fi
+  if [ ! -z "$RECORD" ]
+  then
+    [ "${RECORD:0:1}" != "," ] && RECORD=",$RECORD"
+    if [ "$RECORD" == ,all ] || [ "$RECORD" != "${RECORD/,$i/}" ]
+    then
+      echo recording commands for $i
+      export RECORD_COMMANDS=record-commands
+    else
+      RECORD_COMMANDS=
+    fi
+  fi
   X_OF_Y="($X of $PACKAGECOUNT)" /mnt/build-one-package.sh "$i" || exit 1
   
   sed -i -e "/$i/d" "$MANIFEST" &&

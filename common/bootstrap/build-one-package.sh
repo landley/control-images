@@ -36,7 +36,7 @@ then
 
   for guess in $(find . -name config.guess)
   do
-    rm "$guess" &&
+    rm -f "$guess" &&
     echo -e "#!/bin/sh\ngcc -dumpmachine" > "$guess" || exit 1
   done
   EXT=sh
@@ -47,7 +47,7 @@ fi
 # Call package build script
 
 mkdir -p /home/log
-time "/mnt/build/$1".* 2>&1 | tee "/home/log/$1.log"
+WRAPPY_LOGPATH=/home/log/$1.commands time $RECORD_COMMANDS "/mnt/build/$1".* 2>&1 | tee "/home/log/$1.log"
 if [ $? -ne 0 ]
 then
   echo "$1" died >&2
