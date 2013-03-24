@@ -31,6 +31,7 @@ squash_image()
 {
   # Create squashfs image
 
+  announce squash "$IMAGENAME"
   if [ ! -z "$(which mksquashfs)" ]
   then
     mksquashfs "$WORK" "$WORK.hdc" -noappend -all-root || dienow
