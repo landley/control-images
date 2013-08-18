@@ -11,16 +11,16 @@ echo "=== Download source code."
 
 # Note: set SHA1= blank to skip checksum validation.
 
-URL=http://downloads.sf.net/sourceforge/strace/strace-4.7.tar.xz \
-SHA1=af917d27abf54b43fecf10373b320a2d42dfba4e \
+URL=http://downloads.sf.net/sourceforge/strace/strace-4.8.tar.xz \
+SHA1=88c19b900d9cb2931e6ea4cf36e0ae3838f2f698 \
 maybe_fork download || dienow
 
-URL=http://zlib.net/zlib-1.2.7.tar.bz2 \
-SHA1=858818fe6d358ec682d54ac5e106a2dd62628e7f \
+URL=http://zlib.net/zlib-1.2.8.tar.gz \
+SHA1=a4d316c404ff54ca545ea71a27af7dbc29817088 \
 maybe_fork "download || dienow"
 
-URL=http://matt.ucc.asn.au/dropbear/releases/dropbear-2012.55.tar.bz2
-SHA1=261d033c28031faa34b92390ad5278feb20c6efc \
+URL=http://matt.ucc.asn.au/dropbear/releases/dropbear-2013.58.tar.bz2
+SHA1=fdbc0ed332b17fc7579dbce6d95d585cf5d653d7 \
 maybe_fork download || dienow
 
 #URL=http://kernel.org/pub/software/utils/pciutils/pciutils-3.1.7.tar.bz2 \
