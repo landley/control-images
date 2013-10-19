@@ -19,8 +19,8 @@ URL=http://zlib.net/zlib-1.2.8.tar.gz \
 SHA1=a4d316c404ff54ca545ea71a27af7dbc29817088 \
 maybe_fork "download || dienow"
 
-URL=http://matt.ucc.asn.au/dropbear/releases/dropbear-2013.58.tar.bz2
-SHA1=fdbc0ed332b17fc7579dbce6d95d585cf5d653d7 \
+URL=http://matt.ucc.asn.au/dropbear/releases/dropbear-2013.59.tar.bz2
+SHA1=86849db6a4cf9dd99c97329ca6446d91f2143f75 \
 maybe_fork download || dienow
 
 #URL=http://kernel.org/pub/software/utils/pciutils/pciutils-3.1.7.tar.bz2 \
