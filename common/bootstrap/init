@@ -6,9 +6,10 @@
 
 [ -z "$NATIVE_BUILD" ] && NATIVE_BUILD=chroot
 
-# Is the root filesystem already writeable?
+# Is the root filesystem already writeable and same or more storage than /
 
-if touch /.amiwrite 2>/dev/null && rm /.amiwrite 2>/dev/null
+if touch /.amiwrite 2>/dev/null && rm /.amiwrite 2>/dev/null &&
+ [ $(($(stat -fc "%a*%S" /))) -ge $(($(stat -fc "%a*%S" /home))) ]
 then
   # build and install stuff on the writable filesystem
 
