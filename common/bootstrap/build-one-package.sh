@@ -1,6 +1,6 @@
-#!/bin/ash
+#!/bin/sh
 
-# Yes, ash.  Because neither bash 2 nor hush support -o pipefail
+# TODO: neither bash 2 nor hush actually support -o pipefail
 
 set -o pipefail
 
