@@ -47,8 +47,9 @@ fi
 # Call package build script
 
 mkdir -p /home/log
-WRAPPY_LOGPATH=/home/log/$1.commands time $RECORD_COMMANDS "/mnt/build/$1".* 2>&1 | tee "/home/log/$1.log"
-if [ $? -ne 0 ]
+rm -rf /home/success
+( WRAPPY_LOGPATH=/home/log/$1.commands time $RECORD_COMMANDS "/mnt/build/$1".* 2>&1 && touch /home/success ) | tee "/home/log/$1.log"
+if ! rm /home/success 2>/dev/null
 then
   echo "$1" died >&2
   exit 1

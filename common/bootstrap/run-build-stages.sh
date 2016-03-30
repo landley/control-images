@@ -11,6 +11,9 @@ PACKAGECOUNT=$(echo "$PACKAGES" | wc -w)
 X=0
 for i in $PACKAGES
 do
+  # Work around bug in hush
+  [ -z "$i" ] && continue
+
   X=$(($X+1))
   if [ -z "$FORCE" ] && grep -q "$i" "$MANIFEST"
   then
